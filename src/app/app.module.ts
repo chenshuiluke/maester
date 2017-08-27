@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { EditorComponent } from './editor/editor.component';
+import { constants } from './providers';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,7 @@ import { EditorComponent } from './editor/editor.component';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [constants],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
