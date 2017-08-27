@@ -15,24 +15,18 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
   }
 
-
-
   ngAfterViewInit() {
-    tinymce.init({
-      selector: '#' + this.elementId,
-      plugins: ['link', 'paste', 'table', 'image', 'autolink', 'code'],
-      skin_url: 'assets/skins/lightgray',
-      setup: editor => {
-        this.editor = editor;
-        editor.on('keyup', () => {
-          const content = editor.getContent();
-          this.onEditorKeyup.emit(content);
-        });
-      },
+    var quill = new Quill('#editor', {
+      theme: 'snow'
     });
+    quill.on('text-change', this.handleTextChange);
   }
 
   ngOnDestroy() {
-    tinymce.remove(this.editor);
+  }
+
+  handleTextChange(delta, old, source){
+    console.log(`delta: ${JSON.stringify(delta)}`);
+    console.log(`old: ${JSON.stringify(old)}`);
   }
 }
