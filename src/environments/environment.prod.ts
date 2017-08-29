@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  host: 'http://localhost:3000',
-  socket_host: 'wss://echo.websocket.org'
+  host: 'https://maester.lukecs.com',
+  socket_host: 'wss://maester.lukecs.com'
 };

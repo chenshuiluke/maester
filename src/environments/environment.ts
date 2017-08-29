@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  host: 'http://maester.lukecs.com',
-  socket_host: 'ws://localhost:3000'
+  host: 'http://localhost:3200',
+  socket_host: 'ws://localhost:3200'
 };

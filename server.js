@@ -42,6 +42,6 @@ wss.on('connection', function(ws){
   })
 });
 
-server.listen(3000, function () {
-  console.log("Listening on port 3000");
+server.listen(3200, function () {
+  console.log("Listening on port 3200");
 });
