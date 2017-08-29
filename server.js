@@ -8,6 +8,8 @@ var websocket = require("ws");
 
 var app = express();
 
+var lastMessage = null;
+
 app.use(logger("short"));
 
 app.use(express.static(path.resolve(__dirname, "dist")));
@@ -22,23 +24,30 @@ app.get("*", function(req, res){
 const server = http.createServer(app);
 var wss = new websocket.Server({server});
 
-wss.broadcast = function broadcast(data) {
+wss.broadcast = function broadcast(data, ws) {
   wss.clients.forEach(function each(client) {
-    client.send(data, function(err){
-      if(err){
-        console.log(err);
-      }
-      else{
-        console.log("Broadcasted")
-      }
-    });
+    if(client !== ws){
+      client.send(data, function(err){
+        if(err){
+          console.log(err);
+        }
+        else{
+          console.log("Broadcasted")
+        }
+      });
+    }
+
   });
 };
 
 wss.on('connection', function(ws){
+  if(lastMessage != null){
+    ws.send(lastMessage);
+  }
   ws.on('message', function(message){
     console.log("Received " + JSON.stringify(message));
-    wss.broadcast(message);
+    lastMessage = message;
+    wss.broadcast(message, ws);
   })
 });
 

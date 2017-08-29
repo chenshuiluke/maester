@@ -21,29 +21,19 @@ export class SocketService {
   create(url:string){
     let ws = new WebSocket(url);
 
-    let observable = Rx.Observable.create((obs:Rx.Observer<MessageEvent>) => {
-      ws.onmessage = obs.next.bind(obs);
-      ws.onerror = obs.error.bind(obs);
-      ws.onclose = obs.complete.bind(obs);
-      return ws.close.bind(ws);
-    });
-
-    let observer = {
-      message: (data:Object) => {
-        console.log(data);
-        this.emitter.emit(data);
-      },
-      next: (data: Object) => {
-        ws.send(data);
-      },
-      error: (error: Object) => {
-        console.log(error);
-      },
-      complete: () => {
-        console.log("Socket closed");
-      }
+    ws.onmessage = (message)=>{
+      console.log(message.data);
+      this.emitter.emit(message.data);
     };
-    return Rx.Subject.create(observer, observable);
+
+    ws.onerror = (error) => {
+      console.log(error);
+    }
+
+    ws.onclose = () => {
+      console.log("Socket closed");
+    }
+    return ws;
   }
 
   getEmitter(){
@@ -51,7 +41,7 @@ export class SocketService {
   }
 
   send(message:any){
-    this.socket.next(message);
+    this.socket.send(message);
   }
 
   getSocket(){
